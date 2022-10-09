@@ -8,7 +8,6 @@ void CPythonNetworkStream::StartGame()
 void CPythonNetworkStream::StartGame()
 {
 #ifdef ENABLE_ENTITY_PRELOADING
-	TraceError("CURRENT WARP MAP NAME %s", CPythonBackground::Instance().GetWarpMapName());
 	CPythonCharacterManager::Instance().PreloadEntities();
 #endif
 	m_isStartGame=TRUE;

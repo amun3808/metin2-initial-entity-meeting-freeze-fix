@@ -51,9 +51,7 @@ void CPythonCharacterManager::ConstructPreloadedEntitiesMap()
 void CPythonCharacterManager::PreloadEntities()
 {
 	std::string mapName = CPythonBackground::Instance().GetWarpMapName();
-#ifdef _DEBUG
-	Timer t("Preloading Entities for map %s", mapName.c_str());
-#endif
+
 	CInstanceBase::SCreateData d{};
 
 	if (m_mapPreloadedEntities.find(mapName) == m_mapPreloadedEntities.end())
@@ -66,7 +64,6 @@ void CPythonCharacterManager::PreloadEntities()
 	{
 		d.m_dwRace = vnum;
 		d.m_dwVID = vnum;
-		TraceError("Preloading %d", vnum);
 		if (!CPythonCharacterManager::Instance().CreateInstance(d))
 			TraceError("Failed to preload race %d", vnum);
 	}
