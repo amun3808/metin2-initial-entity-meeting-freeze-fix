@@ -181,7 +181,7 @@ def ReconstructMapDataWithUniqueIds():
 		# regen groups
 		mapRegenGroups = mapData[curMap]["r"]
 		for group in mapRegenGroups:
-			if group not in mapRegenGroups:
+			if group not in regenGroups:
 				continue
 			
 			for rg in regenGroups[group]:
