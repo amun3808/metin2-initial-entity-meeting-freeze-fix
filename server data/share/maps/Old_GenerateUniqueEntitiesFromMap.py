@@ -41,7 +41,7 @@ def ParseMaps():
 		mapData[mapName]["g"] = []
 		mapData[mapName]["m"] = []
 		mapData[mapName]["r"] = []
-		print(mapName)
+		# print(mapName)
 
 		for mapFile in mapFiles:
 			lines = 0
@@ -69,16 +69,7 @@ def ParseMaps():
 # the dict is now complete, let's parse the groups
 """
 groups = {
-	groupVnum: [leaderVnum, mobsVnum]
-}
-"""
-"""
-Group	L01_�鰳(PAWN)-�鰳(PAWN)
-{
-	Leader	Wildhund	101
-	Vnum	101
-	1	Wildhund	101
-	2	Wildhund	101
+	groupVnum: [leader, ...members]
 }
 """
 groups = {}
@@ -98,7 +89,7 @@ def ParseGroup():
 			for member in currentGroup["Members"]:
 				groups[currentGroup["Vnum"]].append(member)
 			# clear the currentGroup
-			currentGroup = {"Members": [], "Vnum": 0, "Leader":0}
+			currentGroup = {"Members": [], "Vnum": 0}
 
 		try:
 			s = line.split()
@@ -114,12 +105,11 @@ def ParseGroup():
 			stripped = s[1].strip()
 			if stripped:
 				currentGroup["Vnum"] = int(stripped)
-		else:#leader and members have the same structure [tok, name, vnum]
-			if len(s) == 3:
-				stripped = s[2].strip()
-				if stripped:
-					currentGroup["Members"].append(int(stripped))
-					print(stripped)
+		#leader and members have the same structure [tok, name, vnum]
+		elif len(s) == 3:
+			stripped = s[2].strip()
+			if stripped:
+				currentGroup["Members"].append(int(stripped))
 
 #
 """
@@ -139,34 +129,36 @@ def ParseGroupGroup():
 		# when the group ends
 		if line == "}":
 			# append the currentGroup to our global dict
+			# instantiate regenGroup Vnum:[]
 			regenGroups[currentGroup["Vnum"]] = []
 			# members
 			for member in currentGroup["Members"]:
-				print(member)
 				regenGroups[currentGroup["Vnum"]].append(member)
 			# clear the currentGroup
 			currentGroup = {"Members":[], "Vnum":0}
 
 		try:
-			# we don't care about any third values
-			[tok, idx] = line.split()
+			arr = line.split()
+			if not len(arr):
+				continue
+
+			# idx is always the second item
+			idx = arr[1].strip()
+			if not idx:
+				continue
+
+			# Vnum	x
+			if arr[0] == "Vnum":
+				currentGroup["Vnum"] = int(idx)
+			# idx	vnum	count
+			elif len(arr) == 3:
+				currentGroup["Members"].append(int(idx))
 		except:
 			pass
-
-		idx = idx.strip()
-		tok = tok.strip()
-		if not idx or not tok or tok == "Group":
-			continue
-
-		if tok == "Vnum":
-			currentGroup["Vnum"] = int(idx)
-		else:
-			currentGroup["Members"].append(int(idx))
 			
 #
 def ReconstructMapDataWithUniqueIds():
 	for curMap in mapData.keys():
-		print(curMap)
 		# groups
 		mapGroups = mapData[curMap]["g"]
 		for group in mapGroups:
@@ -188,6 +180,7 @@ def ReconstructMapDataWithUniqueIds():
 				mapData[curMap]["m"].append(int(rg))
 		# remove duplicates from mobs array
 		mapData[curMap]["m"] = list(dict.fromkeys(mapData[curMap]["m"]))
+		# sort the mobs
 		mapData[curMap]["m"].sort()
 
 #
