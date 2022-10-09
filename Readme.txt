@@ -2,6 +2,9 @@ The old version required root changes, the new version is only src.
 It still requires the list of entities in root, of course.
 
 
+NOTE: The parser for old group structures has been fixed.
+
+
 Description:
 This is a solution for those micro freezes when you meet an entity(mob, npc) for the first time. 
 The python script should extract all mobs and NPCs from each map and list them in a file called 'preload.txt'.
