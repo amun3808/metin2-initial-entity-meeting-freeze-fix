@@ -10,7 +10,9 @@ void CPythonCharacterManager::PreloadEntities()
 	{
 		d.m_dwRace = vnum;
 		d.m_dwVID = vnum;
+#ifdef _DEBUG
 		TraceError("Preloading %d", vnum);
+#endif
 		if (!CPythonCharacterManager::Instance().CreateInstance(d))
 			TraceError("Failed to preload race %d", vnum);
 	}
