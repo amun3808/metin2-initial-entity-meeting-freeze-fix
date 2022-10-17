@@ -26,6 +26,10 @@ void SECTREE_MANAGER::ExtendPreloadedEntitiesMap(int32_t mapIndex, LPSECTREE_MAP
 				s.insert(i);
 
 			m_preloadedEntities.at(mapIndex).assign(s.begin(), s.end());
+
+			// log unique races
+			for(int32_t i: m_preloadedEntities.at(mapIndex))
+				sys_log(0, "ENTITY_PRELOADING: [map: %d], [entity race: %d]", mapIndex, i);
 		}
 	}
 }

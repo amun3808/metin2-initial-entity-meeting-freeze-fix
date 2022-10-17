@@ -20,27 +20,21 @@ bool CPythonNetworkStream::RecvPreloadEntitiesPacket()
 
 	assert(int32_t(pack.size) - sizeof(pack) == pack.count * sizeof(uint32_t) && "HEADER_GC_PRELOAD_ENTITIES");
 
-	/*
-	@Amun:
-		We can't instantiate the entities here, because the path to their files isn't registered yet.
-		The path is registered after calling "__LoadGameNPC()" in root(playerSettingModule),
-			so we'll save the ids to CPythonCharacterManager::m_vecPreloadedEntities and
-			call CPythonCharacterManager::PreloadEntities() from CPythonNetworkStream::StartGame(),
-			to load them right before we show the "world"(before setting m_isStartGame to TRUE).
-
-		My initial idea was to create a new game phase, but ..yeah, fuck that. 
-	*/
-
-	std::vector<uint32_t>* entVec = CPythonCharacterManager::Instance().GetPreloadedEntitiesVectorPtr();
-	entVec->clear();
-
+	CInstanceBase::SCreateData d{};
 	for (int32_t i = 0; i < pack.count; i++)
 	{
 		uint32_t dwEntityRace;
 		if (!Recv(sizeof(uint32_t), &dwEntityRace))
 			return false;
 
-		entVec->emplace_back(dwEntityRace);
+		d.m_dwRace = dwEntityRace;
+		d.m_dwVID = dwEntityRace;
+#ifdef _DEBUG
+		TraceError("Preloading %d", dwEntityRace);
+#endif
+		if (!CPythonCharacterManager::Instance().CreateInstance(d))
+			TraceError("Failed to preload race %d", dwEntityRace);
+
 	}
 
 	return true;
