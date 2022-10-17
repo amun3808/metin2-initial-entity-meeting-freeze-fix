@@ -16,7 +16,7 @@ void SECTREE_MANAGER::ExtendPreloadedEntitiesMap(int32_t mapIndex, LPSECTREE_MAP
 		m_preloadedEntities.insert({ mapIndex, {} });
 
 		auto lmbd = [&mapIndex, this](LPENTITY ent) {
-			this->m_preloadedEntities.at(mapIndex).push_back(((LPCHARACTER)ent)->GetRaceNum());
+			this->m_preloadedEntities.at(mapIndex).emplace_back(((LPCHARACTER)ent)->GetRaceNum());
 		};
 		lpMapSectree->for_each(lmbd);
 
