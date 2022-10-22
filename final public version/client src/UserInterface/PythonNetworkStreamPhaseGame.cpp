@@ -20,21 +20,19 @@ bool CPythonNetworkStream::RecvPreloadEntitiesPacket()
 
 	assert(int32_t(pack.size) - sizeof(pack) == pack.count * sizeof(uint32_t) && "HEADER_GC_PRELOAD_ENTITIES");
 
-	CInstanceBase::SCreateData d{};
+	CRaceData* pRaceData = nullptr;
+	CRaceManager& rkRaceMgr = CRaceManager::Instance();
 	for (int32_t i = 0; i < pack.count; i++)
 	{
 		uint32_t dwEntityRace;
 		if (!Recv(sizeof(uint32_t), &dwEntityRace))
 			return false;
 
-		d.m_dwRace = dwEntityRace;
-		d.m_dwVID = dwEntityRace;
 #ifdef _DEBUG
-		TraceError("Preloading %d", dwEntityRace);
+		 TraceError("Preloading %d", dwEntityRace);
 #endif
-		if (!CPythonCharacterManager::Instance().CreateInstance(d))
-			TraceError("Failed to preload race %d", dwEntityRace);
-
+		 if (!rkRaceMgr.GetRaceDataPointer(dwEntityRace, &pRaceData))
+			 TraceError("Failed to preload race %d", dwEntityRace);
 	}
 
 	return true;
