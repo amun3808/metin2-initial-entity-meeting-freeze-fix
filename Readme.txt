@@ -24,3 +24,6 @@ Looks like the biggest factor slowing us down(and creating the freeze) are the m
 
 I'm too sick of it to look into alternative ways of fixing this,
 so we'll just create a dummy entity to force them to load, and then get rid of it. EZ
+
+With these changes, we should see around 97 - 99% reduction in processing time(from up to 200ms down to about 0 - 5ms),
+however, loading will slow down with about 1-3 seconds, but that's insignificant compared to the benefits.
