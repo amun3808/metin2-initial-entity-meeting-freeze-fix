@@ -9,9 +9,18 @@ Files removed: PythonCharacterManager.cpp, PythonCharacterManager.h, PythonNetwo
 Updated Methods in PythonNetworkStreamPhaseGame.cpp
 
 
-UPDATE 08/12/2022:
+08/12/2022 UPDATE_1:
 Refactored to use unordered_set from the beginning instead of creating a vector, 
 then filtering unique entities by creating a set, and then moving them back to a vector.
 
 Extended to load the full spectrum of entities(both static and dynamic),
 	except for PC(which are loaded in loading phase), WARP, GOTO, and DOOR.
+
+08/12/2022 UPDATE_2:
+Looks like the biggest factor slowing us down(and creating the freeze) are the motion thing registrations,
+	which I'm too lazy of coming up with some other way of loading them.
+	To see what I'm talking about, go to GameLib/ActorInstanceData.cpp
+	and find bool CActorInstance::SetRace(uint32_t eRace)
+
+I'm too sick of it to look into alternative ways of fixing this,
+so we'll just create a dummy entity to force them to load, and then get rid of it. EZ
