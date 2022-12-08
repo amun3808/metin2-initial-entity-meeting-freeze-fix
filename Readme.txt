@@ -7,3 +7,11 @@ Since the entities are sent asynchronously, one by one, they will load while sho
 
 Files removed: PythonCharacterManager.cpp, PythonCharacterManager.h, PythonNetworkStreamPhaseLoading.cpp
 Updated Methods in PythonNetworkStreamPhaseGame.cpp
+
+
+UPDATE 08/12/2022:
+Refactored to use unordered_set from the beginning instead of creating a vector, 
+then filtering unique entities by creating a set, and then moving them back to a vector.
+
+Extended to load the full spectrum of entities(both static and dynamic),
+	except for PC(which are loaded in loading phase), WARP, GOTO, and DOOR.

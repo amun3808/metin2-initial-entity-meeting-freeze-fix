@@ -3,7 +3,8 @@
 
 // add after
 #ifdef ENABLE_ENTITY_PRELOADING
-	void ExtendPreloadedEntitiesMap(int32_t mapIndex, LPSECTREE_MAP lpMapSectree);
+	void GeneratePreloadedEntitiesMap(int32_t mapIndex, LPSECTREE_MAP lpMapSectree);
+	void ExtendPreloadedEntitiesMap(int32_t mapIndex, uint32_t mob_race);
 	void SendPreloadEntitiesPacket(LPCHARACTER ch);
 #endif
 
@@ -13,5 +14,5 @@
 
 // add this after
 #ifdef ENABLE_ENTITY_PRELOADING
-	std::unordered_map<int32_t, std::vector<uint32_t>> m_preloadedEntities;
+	std::unordered_map<int32_t, std::unordered_set<uint32_t>> m_preloadedEntities;
 #endif
