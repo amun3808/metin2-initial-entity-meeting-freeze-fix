@@ -18,7 +18,7 @@ Extended to load the full spectrum of entities(both static and dynamic),
 
 08/12/2022 UPDATE_2:
 Looks like the biggest factor slowing us down(and creating the freeze) are the motion thing registrations,
-	which I'm too lazy of coming up with some other way of loading them.
+	which I'm too lazy to come up with some other way of loading them.
 	To see what I'm talking about, go to GameLib/ActorInstanceData.cpp
 	and find bool CActorInstance::SetRace(uint32_t eRace)
 
