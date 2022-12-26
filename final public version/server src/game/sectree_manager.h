@@ -1,4 +1,11 @@
 // find
+#include "sectree.h"
+
+// add after
+
+#include <unordered_set>
+
+// find
 	size_t		GetMonsterCountInMap(long lMpaIndex, uint32_t dwVnum);
 
 // add after
